@@ -37,7 +37,7 @@ public class GhibliFoodController : ControllerBase
     public async Task<IActionResult> Search(string searchTerm)
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
-        var ghibliFood = await cnn.QueryAsync<GhibliFood>("SELECT * FROM GhibliFood INNER JOIN GhibliRestaurant ON GhibliFood.RestaurantId = GhibliRestaurant.Id WHERE GhibliFood.Name LIKE @SearchTerm", new { SearchTerm = $"%{searchTerm}%" });
+        var ghibliFood = await cnn.QueryAsync<GhibliFood>("SELECT * FROM GhibliFood INNER JOIN GhibliRestaurant ON GhibliFood.RestaurantId = GhibliRestaurant.Id WHERE GhibliFood.AnimeName LIKE @SearchTerm", new { SearchTerm = $"%{searchTerm}%" });
         if (!ghibliFood.Any()) return NotFound();
         return Ok(ghibliFood);
     }
