@@ -1,6 +1,5 @@
 using System.Data;
 using System.Data.SqlClient;
-using System.Xml.Linq;
 using Dapper;
 using GhibliFoodApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -41,45 +40,70 @@ public class GhibliFoodController : ControllerBase
     public async Task<IActionResult> Get(string animeName)
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
-        var ghibliFood = await cnn.QueryAsync<GhibliFood>("SELECT * FROM GhibliFood INNER JOIN GhibliRestaurant ON GhibliFood.RestaurantId = GhibliRestaurant.Id WHERE GhibliFood.AnimeName = @AnimeName", new { AnimeName = animeName });
-        if (!ghibliFood.Any()) return NotFound();
-        return Ok(ghibliFood);
+
+        var result = await cnn.QueryAsync("SELECT * FROM GhibliFood INNER JOIN GhibliRestaurant ON GhibliFood.RestaurantId = GhibliRestaurant.Id WHERE AnimeName = @AnimeName", new { AnimeName = animeName });
+        var ghibliFood = result.Select(g => new GhibliViewModel(){
+            Id = g.Id,
+            AnimeName = g.AnimeName,
+            FoodName = g.FoodName,
+            Description = g.Description,
+            ImageUrl = g.ImageUrl,
+            RecipeUrl = g.RecipeUrl,
+            RestaurantId = g.RestaurantId,
+            RestaurantName = g.RestaurantName,
+            RestaurantAddress = g.RestaurantAddress,
+            RestaurantImageUrl = g.RestaurantImageUrl
+        }); 
+        return Ok(ghibliFood); 
     }
     
     [HttpGet("search/{searchTerm}", Name = "SearchGhibliFood")]
     public async Task<IActionResult> Search(string searchTerm)
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
-        var ghibliFood = await cnn.QueryAsync<GhibliFood>("SELECT * FROM GhibliFood INNER JOIN GhibliRestaurant ON GhibliFood.RestaurantId = GhibliRestaurant.Id WHERE GhibliFood.AnimeName LIKE @SearchTerm", new { SearchTerm = $"%{searchTerm}%" });
-        if (!ghibliFood.Any()) return NotFound();
-        return Ok(ghibliFood);
+
+        var result = await cnn.QueryAsync("SELECT * FROM GhibliFood INNER JOIN GhibliRestaurant ON GhibliFood.RestaurantId = GhibliRestaurant.Id WHERE FoodName LIKE @SearchTerm OR Description LIKE @SearchTerm", new { SearchTerm = $"%{searchTerm}%" });
+        var ghibliFood = result.Select(g => new GhibliViewModel(){
+            Id = g.Id,
+            AnimeName = g.AnimeName,
+            FoodName = g.FoodName,
+            Description = g.Description,
+            ImageUrl = g.ImageUrl,
+            RecipeUrl = g.RecipeUrl,
+            RestaurantId = g.RestaurantId,
+            RestaurantName = g.RestaurantName,
+            RestaurantAddress = g.RestaurantAddress,
+            RestaurantImageUrl = g.RestaurantImageUrl
+        }); 
+        return Ok(ghibliFood); 
     }
     
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] GhibliFood ghibliFood)
+    public async Task<IActionResult> Post([FromBody] GhibliViewModel ghibliFood)
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
-        var result = await cnn.ExecuteAsync("INSERT INTO GhibliFood (Name, AnimeName, RestaurantId) VALUES (@Name, @AnimeName, @RestaurantId)", ghibliFood);
-        if (result == 0) return BadRequest();
-        return CreatedAtRoute("GetGhibliFood", new { animeName = ghibliFood.AnimeName }, ghibliFood);
+
+        var result = await cnn.ExecuteAsync("INSERT INTO GhibliFood (AnimeName, FoodName, Description, ImageUrl, RecipeUrl, RestaurantId) VALUES (@AnimeName, @FoodName, @Description, @ImageUrl, @RecipeUrl, @RestaurantId)", new { AnimeName = ghibliFood.AnimeName, FoodName = ghibliFood.FoodName, Description = ghibliFood.Description, ImageUrl = ghibliFood.ImageUrl, RecipeUrl = ghibliFood.RecipeUrl, RestaurantId = ghibliFood.RestaurantId });
+        return Ok(result);
     }
     
-    [HttpPut("{animeName}")]
-    public async Task<IActionResult> Put(string animeName, [FromBody] GhibliFood ghibliFood)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, [FromBody] GhibliViewModel ghibliFood)
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
-        var result = await cnn.ExecuteAsync("UPDATE GhibliFood SET FoodName = @FoodName WHERE AnimeName = @AnimeName", new { AnimeName = animeName, FoodName = ghibliFood.FoodName });
-        if (result == 0) return BadRequest();
-        return NoContent();
+
+        var result = await cnn.ExecuteAsync("UPDATE GhibliFood SET AnimeName = @AnimeName, FoodName = @FoodName, Description = @Description, ImageUrl = @ImageUrl, RecipeUrl = @RecipeUrl, RestaurantId = @RestaurantId WHERE Id = @Id", new { Id = id, AnimeName = ghibliFood.AnimeName, FoodName = ghibliFood.FoodName, Description = ghibliFood.Description, ImageUrl = ghibliFood.ImageUrl, RecipeUrl = ghibliFood.RecipeUrl, RestaurantId = ghibliFood.RestaurantId });
+        return Ok(result);
     }
+    
     
     [HttpDelete("{animeName}")]
     public async Task<IActionResult> Delete(string animeName)
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
+
         var result = await cnn.ExecuteAsync("DELETE FROM GhibliFood WHERE AnimeName = @AnimeName", new { AnimeName = animeName });
-        if (result == 0) return BadRequest();
-        return NoContent();
+        return Ok(result);
     }
 }
