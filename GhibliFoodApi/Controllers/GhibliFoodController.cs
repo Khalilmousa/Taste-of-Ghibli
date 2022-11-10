@@ -1,5 +1,6 @@
 using System.Data;
 using System.Data.SqlClient;
+using System.Xml.Linq;
 using Dapper;
 using GhibliFoodApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -16,15 +17,27 @@ public class GhibliFoodController : ControllerBase
     readonly string CnnString = @"Server=localhost,1433;Database=GhibliDB;User Id=sa;Password=Password_2_Change_4_Real_Cases_&";
     
     [HttpGet (Name = "GetAllGhibliFood")]
-    public async Task<IEnumerable<GhibliFood>> Get()
+    public async Task<IEnumerable<GhibliViewModel>> Get()
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
 
-        var ghibliFood = await cnn.QueryAsync<GhibliFood>("SELECT * FROM GhibliFood INNER JOIN GhibliRestaurant ON GhibliFood.RestaurantId = GhibliRestaurant.Id");
-        return ghibliFood;
+        var result = await cnn.QueryAsync("SELECT * FROM GhibliFood INNER JOIN GhibliRestaurant ON GhibliFood.RestaurantId = GhibliRestaurant.Id");
+        var ghibliFood = result.Select(g => new GhibliViewModel(){
+            Id = g.Id,
+            AnimeName = g.AnimeName,
+            FoodName = g.FoodName,
+            Description = g.Description,
+            ImageUrl = g.ImageUrl,
+            RecipeUrl = g.RecipeUrl,
+            RestaurantId = g.RestaurantId,
+            RestaurantName = g.RestaurantName,
+            RestaurantAddress = g.RestaurantAddress,
+            RestaurantImageUrl = g.RestaurantImageUrl
+        }); 
+        return ghibliFood; 
     }
 
-    [HttpGet("{animeName}", Name = "GetGhibliFood")]
+        [HttpGet("{animeName}", Name = "GetGhibliFood")]
     public async Task<IActionResult> Get(string animeName)
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
