@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ktv+nbROX7wCmVEnLC6Z7HRHV7nNL0JAx29vjilu40GUxW74tG32zyk2mQAPyKhfYt4DGYAj4mS4FMX/3rMwWA==",
+  "dgSpecHash": "luyItwz36WtUY3ltsRQpugJoVjFCLHK5l85HcS6PxpGYoVIVACJY0WL5toBbnE2lhnZ0Z8bRMMDWxUWrtPmKKw==",
   "success": true,
-  "projectFilePath": "/Users/rminafa/Projects/Taste-of-Ghibli/GhibliFoodApi/GhibliFoodApi.csproj",
+  "projectFilePath": "/Users/rminafa/Projects/Taste-of-Ghibli-project/GhibliFoodApi/GhibliFoodApi.csproj",
   "expectedPackageFiles": [
     "/Users/rminafa/.nuget/packages/dapper/2.0.123/dapper.2.0.123.nupkg.sha512",
     "/Users/rminafa/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",

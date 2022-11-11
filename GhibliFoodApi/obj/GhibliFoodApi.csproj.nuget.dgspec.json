@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/rminafa/Projects/Taste-of-Ghibli/GhibliFoodApi/GhibliFoodApi.csproj": {}
+    "/Users/rminafa/Projects/Taste-of-Ghibli-project/GhibliFoodApi/GhibliFoodApi.csproj": {}
   },
   "projects": {
-    "/Users/rminafa/Projects/Taste-of-Ghibli/GhibliFoodApi/GhibliFoodApi.csproj": {
+    "/Users/rminafa/Projects/Taste-of-Ghibli-project/GhibliFoodApi/GhibliFoodApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/rminafa/Projects/Taste-of-Ghibli/GhibliFoodApi/GhibliFoodApi.csproj",
+        "projectUniqueName": "/Users/rminafa/Projects/Taste-of-Ghibli-project/GhibliFoodApi/GhibliFoodApi.csproj",
         "projectName": "GhibliFoodApi",
-        "projectPath": "/Users/rminafa/Projects/Taste-of-Ghibli/GhibliFoodApi/GhibliFoodApi.csproj",
+        "projectPath": "/Users/rminafa/Projects/Taste-of-Ghibli-project/GhibliFoodApi/GhibliFoodApi.csproj",
         "packagesPath": "/Users/rminafa/.nuget/packages/",
-        "outputPath": "/Users/rminafa/Projects/Taste-of-Ghibli/GhibliFoodApi/obj/",
+        "outputPath": "/Users/rminafa/Projects/Taste-of-Ghibli-project/GhibliFoodApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/rminafa/.nuget/NuGet/NuGet.Config"

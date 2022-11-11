@@ -8,8 +8,5 @@ public class GhibliFood
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
     public string? RecipeUrl { get; set; }
-    public string? RestaurantName{ get; set; }
-    public string? RestaurantAddress { get; set; }
-    public string? RestaurantImageUrl { get; set; }
-    public string? LinkUrl { get; set; }
+    public string? RestaurantId { get; set; }
 }

@@ -79,13 +79,22 @@ public class GhibliFoodController : ControllerBase
     }
     
 
-    [HttpPost]
-    public async Task<IActionResult> Post([FromBody] GhibliViewModel ghibliFood)
+    [HttpPost("food")]
+    public async Task<IActionResult> Post([FromBody] GhibliFood ghibliFood)
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
 
-        var result = await cnn.ExecuteAsync("INSERT INTO GhibliFood (AnimeName, FoodName, Description, ImageUrl, RecipeUrl, RestaurantId) VALUES (@AnimeName, @FoodName, @Description, @ImageUrl, @RecipeUrl, @RestaurantId)", new { AnimeName = ghibliFood.AnimeName, FoodName = ghibliFood.FoodName, Description = ghibliFood.Description, ImageUrl = ghibliFood.ImageUrl, RecipeUrl = ghibliFood.RecipeUrl, RestaurantId = ghibliFood.RestaurantId });
+        var result = await cnn.ExecuteAsync("INSERT INTO GhibliFood (AnimeName, FoodName, Description, RecipeUrl, RestaurantId) VALUES (@AnimeName, @FoodName, @Description, @RecipeUrl, @RestaurantId)", ghibliFood);
         return Ok(result);
+    }
+    
+    [HttpPost("restaurant")]
+    public async Task<IActionResult> Post([FromBody] GhibliRestaurant ghibliRestaurant)
+    {
+        using IDbConnection cnn = new SqlConnection(CnnString);
+
+        var result = await cnn.ExecuteAsync("INSERT INTO GhibliRestaurant (RestaurantName, RestaurantAddress) VALUES (@RestaurantName, @RestaurantAddress)", ghibliRestaurant);
+        return Ok(result); 
     }
     
     [HttpPut("{id}")]
@@ -93,17 +102,16 @@ public class GhibliFoodController : ControllerBase
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
 
-        var result = await cnn.ExecuteAsync("UPDATE GhibliFood SET AnimeName = @AnimeName, FoodName = @FoodName, Description = @Description, ImageUrl = @ImageUrl, RecipeUrl = @RecipeUrl, RestaurantId = @RestaurantId WHERE Id = @Id", new { Id = id, AnimeName = ghibliFood.AnimeName, FoodName = ghibliFood.FoodName, Description = ghibliFood.Description, ImageUrl = ghibliFood.ImageUrl, RecipeUrl = ghibliFood.RecipeUrl, RestaurantId = ghibliFood.RestaurantId });
+        var result = await cnn.ExecuteAsync("UPDATE GhibliFood SET AnimeName = @AnimeName, FoodName = @FoodName, Description = @Description, ImageUrl = @ImageUrl, RecipeUrl = @RecipeUrl, RestaurantId = @RestaurantId WHERE Id = @Id", new { Id = id, AnimeName = ghibliFood.AnimeName, FoodName = ghibliFood.FoodName, Description = ghibliFood.Description, RecipeUrl = ghibliFood.RecipeUrl, RestaurantId = ghibliFood.RestaurantId });
         return Ok(result);
     }
     
-    
-    [HttpDelete("{animeName}")]
-    public async Task<IActionResult> Delete(string animeName)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
     {
         using IDbConnection cnn = new SqlConnection(CnnString);
 
-        var result = await cnn.ExecuteAsync("DELETE FROM GhibliFood WHERE AnimeName = @AnimeName", new { AnimeName = animeName });
+        var result = await cnn.ExecuteAsync("DELETE FROM GhibliFood WHERE Id = @Id", new { Id = id });
         return Ok(result);
     }
 }
