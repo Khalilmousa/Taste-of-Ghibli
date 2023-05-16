@@ -17,14 +17,13 @@ Taste of Ghibli is a RESTful API built with ASP.NET Core. It provides endpoints 
   - [PUT /api/GhibliFood/{id}](#put-apighiblifoodid)
   - [DELETE /api/GhibliFood/{id}](#delete-apighiblifoodid)
 - [Contributing](#contributing)
-- [License](#license)
 
 <img width="1728" alt="4" src="https://user-images.githubusercontent.com/90157472/201306383-2eef7f4c-5207-40ed-ab6f-9fe5bc6a62eb.png">
 
 ## Installation
 To run this API locally, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/GhibliFoodApi.git`
+1. Clone the repository: `git clone https://github.com/Armin-AF/GhibliFoodApi.git`
 2. Navigate to the project directory: `cd GhibliFoodApi`
 3. Modify the `CnnString` variable in `GhibliFoodController.cs` to match your database connection string.
 4. Build the project: `dotnet build`
